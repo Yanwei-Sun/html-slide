@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing AI as a Service (INFORMS)</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/deck.css">
+<script>
+  window.MathJax = {
+    loader: { load: ['ui/safe'], paths: { mathjax: 'vendor/mathjax' } },
+    options: { safeOptions: {
+      safeProtocols: { http: true, https: true, file: false, javascript: false, data: false },
+      classPattern: /^(?:mjx-[-a-zA-Z0-9_.]+|c-(?:teal|orange|purple|ink))$/
+    } },
+    tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], packages: {'[+]': ['color', 'boldsymbol', 'cancel', 'bbox', 'html']} },
+    chtml: { fontURL: 'vendor/mathjax/output/chtml/fonts/woff-v2', mtextInheritFont: false, scale: 1 },
+    startup: { typeset: false }
+  };
+</script>
+<script src="vendor/mathjax/tex-chtml-full.js"></script>
+<link rel="stylesheet" href="css/comments.css">
+</head>
+<body>
+<div id="viewport"><div id="stage"></div></div>
+<div id="overview"></div>
+<div id="blank"></div>
+<div id="jump"></div>
+<script src="js/engine.js"></script>
+<script src="js/lib.js"></script>
+<script src="slides/order.js"></script>
+<script>
+  // ?only=m07,u02,...  loads just those slide files (by file-name prefix), e.g. to review finished slides
+  const only = window.ONLY || new URLSearchParams(location.search).get('only');
+  const files = only ? window.ORDER.filter(f => only.split(',').some(o => o && f.startsWith(o.trim()))) : window.ORDER;
+  window.DECK_VARIANT = 'template';
+  Deck.boot(files.map(f => 'slides/' + f));
+</script>
+<script>window.DECK_COMMENTS = 'template';</script>
+<script src="js/comments.js"></script>
+</body>
+</html>

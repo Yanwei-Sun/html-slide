@@ -1,0 +1,23 @@
+{
+  "name": "html-slide",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bundle": "node tools/bundle.mjs",
+    "shots": "node tools/slide_shots.mjs",
+    "script:export": "node tools/script.mjs export",
+    "script:apply": "node tools/script.mjs apply",
+    "script:watch": "node tools/script.mjs watch",
+    "cf:stage": "bash cloudflare/publish.sh stage",
+    "cf:dev": "npm run cf:stage && cd cloudflare && wrangler pages dev site --d1 COMMENTS_DB --ip 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "acorn": "^8.15.0",
+    "playwright": "^1.56.0",
+    "wrangler": "^4.148.0"
+  }
+}

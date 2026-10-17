@@ -1,0 +1,8 @@
+name = "html-slide"
+pages_build_output_dir = "./site"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "COMMENTS_DB"
+database_name = "html-slide-comments"
+# Add your own database_id only in the ignored wrangler.user.toml deployment copy.
