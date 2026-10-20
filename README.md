@@ -1,10 +1,75 @@
 # html-slide
 
-A slide template for research talks, with animated builds, a speaker script, and comments tied to a particular slide and click. The example is the 29-slide **Pricing AI as a Service** INFORMS talk, including its 16-minute script and 77 build states.
+A slide template for research talks, with animated builds, a speaker script, and **comments that an AI coding agent can act
+on**. The example is the 29-slide **Pricing AI as a Service** INFORMS talk, including its 16-minute script and 77 build states.
 
-The deck runs on your computer. An optional Cloudflare site lets coauthors leave comments, mark a box on a slide, attach screenshots, and suggest script changes.
+The deck runs on your computer. Put it online with the optional Cloudflare site, and **anyone you give the link and passcode can
+comment on any slide and edit the script in their browser**: no accounts, nothing to install. Their feedback comes back to you
+tagged with the exact slide and click, so you, or an agent such as Claude Code or Codex, can fix it, republish, and reply.
 
 ![The example customer-service slide](docs/img/slide.png)
+
+## Comments your AI agent can act on
+
+**For coauthors: one link.** Send the site's link and passcode. On any slide they press **Comment**, type, draw a box around the
+part they mean (**Mark on slide**), and paste or drop up to four screenshots. Or they open **Script** and rewrite a note. Everyone
+with the link and passcode has the same access.
+
+![Drawing a box and writing a comment](docs/img/comment-box.png)
+
+**For your agent: precise, local feedback.** `cloudflare/comments/watch.mjs` brings new comments to your computer. Each comment
+comes with its slide ID, click number, text, the marked box (with `--render-box`, a slide PNG with that box drawn on it), and the
+attached images, saved under `work/cloudflare/`. A coding agent can read that, edit the slide's file in
+[deck/slides/](deck/slides/), check it with `npm run shots`, publish, and answer with
+`cloudflare/comments/resolve.mjs`. The reply appears under the original comment on the site.
+
+```mermaid
+flowchart LR
+    A[Coauthor comments on a slide] --> B[watch.mjs brings it to your computer]
+    B --> C[Claude Code or Codex edits the slide]
+    C --> D[Check with npm run shots, then publish]
+    D --> E[resolve.mjs posts the reply]
+    E --> F[Coauthor sees the fix and the reply]
+```
+
+Script edits from the browser come back the same way. `script_watch.mjs` lists them, and `apply_note.mjs` writes them into the
+slide files and [SCRIPT.md](SCRIPT.md), so the next publish gives everyone the new wording.
+
+### Hook it up to Claude Code
+
+Start Claude Code in the repository folder and give it a standing instruction like this:
+
+> Run `node cloudflare/comments/watch.mjs --remote --config cloudflare/wrangler.user.toml` in the background. It waits for new
+> comments and exits when they arrive. For each comment: fix that slide in `deck/slides/`, check every click with
+> `npm run shots -- --ids SLIDE_ID`, publish with `CF_PROJECT_NAME=your-pages-project CF_CONFIG=cloudflare/wrangler.user.toml
+> bash cloudflare/publish.sh deploy`, then reply with `node cloudflare/comments/resolve.mjs COMMENT_ID "what you changed"
+> --remote --config cloudflare/wrangler.user.toml`. Then start the watcher again.
+
+Claude Code is notified when the background watcher finishes, so each new comment starts the next round. Without a session, you
+can pipe one batch to it instead:
+
+```sh
+node cloudflare/comments/watch.mjs --remote --config cloudflare/wrangler.user.toml | \
+  claude -p "Fix the slides these comments ask for in deck/slides/, check them with npm run shots, publish, and reply to each comment with cloudflare/comments/resolve.mjs."
+```
+
+### Hook it up to Codex
+
+`codex exec` reads piped input after its prompt, so the same one-batch loop works:
+
+```sh
+node cloudflare/comments/watch.mjs --remote --config cloudflare/wrangler.user.toml | \
+  codex exec "Fix the slides these comments ask for in deck/slides/, check them with npm run shots, publish, and reply to each comment with cloudflare/comments/resolve.mjs."
+```
+
+Run it again, or in a loop, for the next batch. Give either agent permission to edit files and run commands in this folder, in its
+own settings. **Check its work before it publishes**, at least at first: the reply goes straight to your coauthors.
+
+Prefer to keep feedback on your own computer? Write comments into [inbox/INBOX.md](inbox/INBOX.md) instead. Its watcher hands
+each finished comment to any agent command, for example `--command claude -p` or `--command codex exec`
+([Review locally with an inbox](#review-locally-with-an-inbox)). To set up the shared site, see
+[Try the shared features on your computer](#try-the-shared-features-on-your-computer) and
+[Put it on your own Cloudflare account](#put-it-on-your-own-cloudflare-account).
 
 ## Open the talk
 
@@ -55,11 +120,10 @@ Full screen keeps the slide large while retaining access to the controls.
 
 ![The deck in actual full-screen mode](docs/img/fullscreen.png)
 
-On the Cloudflare preview or shared site, **Comment** opens feedback for the current slide. You can type, paste or drop up to four images, and use **Mark on slide** to draw a rectangle around the part you mean. Stay on that build when sending a marked box.
+On the Cloudflare preview or shared site, **Comment** opens feedback for the current slide (see
+[Comments your AI agent can act on](#comments-your-ai-agent-can-act-on)). Stay on that build when sending a marked box.
 
 ![The Comment button on the shared deck](docs/img/comment-button.png)
-
-![Drawing a box and writing a comment](docs/img/comment-box.png)
 
 The author can fix the slide and post a resolution reply. That reply stays under the original comment. **Show all slides** lets you review feedback across the talk.
 
@@ -292,15 +356,6 @@ node cloudflare/comments/resolve.mjs COMMENT_ID \
 ```
 
 The resolver archives the original and attachments before marking the comment done. Its reply appears beneath that comment on the site. Images remain available unless you explicitly request `--delete-images` after archiving.
-
-```mermaid
-flowchart LR
-    A[Coauthor comments on a slide] --> B[Watcher brings feedback locally]
-    B --> C[Author or coding agent fixes it]
-    C --> D[Check and publish the deck]
-    D --> E[Resolve with a reply]
-    E --> F[Coauthor sees the update]
-```
 
 ### Bring shared script edits into the source
 
