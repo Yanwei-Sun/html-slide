@@ -1,0 +1,13 @@
+/* Presenter controls (js/presenter.js): the bottom bar never appears on its own, and the script has no button (S S opens it). */
+#bar [data-a="script"] { display: none !important; }
+body.pres #bar, body.pres #bar.on { opacity: 0; pointer-events: none; transform: translate(-50%, 12px); }
+body.pres.pres-menu #bar { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+/* the menu handle: a small dot in the bottom-right corner; it fades in when the pointer comes near that corner */
+#pres-handle { position: fixed; right: 10px; bottom: 10px; width: 28px; height: 28px; border-radius: 50%; z-index: 60;
+  display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity .2s;
+  font-family: "CM", serif; font-size: 18px; color: var(--ink3); background: #fff; border: 1px solid var(--rule); }
+body.pres-near #pres-handle { opacity: .7; }
+#pres-handle:hover, body.pres-menu #pres-handle { opacity: 1; }
+/* the pointer disappears after 2 s without moving, so it never sits on a slide during the talk */
+body.pres-idle, body.pres-idle * { cursor: none !important; }
+body.print #pres-handle { display: none !important; }

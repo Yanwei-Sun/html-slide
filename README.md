@@ -83,20 +83,30 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory deck
 
 Then open [http://127.0.0.1:8000](http://127.0.0.1:8000). This is a slide preview; the shared comment service is set up below.
 
-Move the pointer near the bottom to find **Slides**, **Script**, **Full screen**, and **Comment**.
+Presenting needs only a few keys: **`s`** slides, **`s` `s`** script, **`c`** comment, **`f`** full screen. The menu (**Slides**, **Full screen**, **Comment**) opens with **`m`** or the small dot in the bottom-right corner, which fades in when the pointer comes near.
 
 | Action | Mouse or key |
 | --- | --- |
 | Next build, then next slide | Click the slide, `→`, `↓`, Space, Enter, Page Down, or `n` |
 | Previous build | Right-click, `←`, `↑`, Page Up, Backspace, or `p` |
 | Skip to the next or previous slide | Shift + an arrow key |
-| Slide overview | **Slides** or `g`; select a thumbnail |
-| Speaker script | **Script** or `s` |
-| Full screen | **Full screen** or `f` |
+| Slide overview | `s` (or `g`, or **Slides** in the menu); select a thumbnail |
+| Speaker script | `s` `s`: press `s` twice quickly (again to close) |
+| Comment on this slide and click | `c` (or **Comment** in the menu) |
+| Full screen | `f` (or **Full screen** in the menu) |
+| Menu | `m`, or the dot in the bottom-right corner |
 | Blank the screen | `b` |
 | First or last slide | Home or End |
 | Jump to a slide number | Type the number, then Enter |
-| Close overview, comments, or blank screen; cancel a jump | Escape |
+| Close overview, comments, menu, or blank screen; cancel a jump | Escape |
+
+**Why these controls.** In a talk, nothing should appear unless you ask for it.
+- The menu used to slide up whenever the pointer touched the bottom edge, which happens by accident while presenting. Now it opens only on purpose (`m` or the corner dot), and closes once you use it.
+- The actions you need most are single keys you can press without looking at the screen.
+- The script has no button, so a stray click never shows your notes to the audience; `s` `s` opens it.
+- The pointer hides after two seconds without moving, so it never sits on a slide.
+
+The controls live in `deck/js/presenter.js` and `deck/css/presenter.css`; remove those two lines from `deck/index.html` to get the always-visible bottom bar back.
 
 The address records the current slide and build, such as `#5.2` for slide 5, click 2. Visible source links on slides open their sources.
 
