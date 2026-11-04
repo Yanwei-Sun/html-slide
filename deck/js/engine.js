@@ -298,7 +298,7 @@
     const s = D.slides[D.cur], i = +div.dataset.i, raw = notesShown(s)[i] || '';
     const at = clickOffset(div, ev);
     const ta = document.createElement('textarea'); ta.value = raw; ta.spellcheck = true;
-    div.innerHTML = `<span class="k">${i === 0 ? 'on entry' : 'click ' + i} · editing — click outside or press ⌘↵ to save, Esc to cancel</span>`;
+    div.innerHTML = `<span class="k">${i === 0 ? 'on entry' : 'click ' + i} · editing: click outside or press ⌘↵ to save, Esc to cancel</span>`;
     div.appendChild(ta);
     const fitTa = () => { ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 4) + 'px'; };
     const before = (loadEdits()[s.id] || {})[i];   // this note's saved edit before this edit began (Esc puts it back)

@@ -26,7 +26,7 @@ npx wrangler d1 execute html-slide-comments --local \
 npm run cf:dev
 ```
 
-Open the local address printed by Wrangler, enter your chosen passcode, and try Comment or Script. Pages dev runs locally; its current CLI has no `--local` flag. The D1 command explicitly uses `--local`. Keep the same persistence directory for schema setup, Pages dev and the tools below. Run Pages dev from `cloudflare/` so it finds the sibling `functions/` folder. The package command does this and passes `--d1 COMMENTS_DB`, which explicitly binds the same local database used by the schema and author tools. A database ID is not needed for this local binding.
+Open the local address printed by Wrangler, enter your chosen passcode, and try a comment (`c`) or the script (`s` twice). Pages dev runs locally; its current CLI has no `--local` flag. The D1 command explicitly uses `--local`. Keep the same persistence directory for schema setup, Pages dev and the tools below. Run Pages dev from `cloudflare/` so it finds the sibling `functions/` folder. The package command does this and passes `--d1 COMMENTS_DB`, which explicitly binds the same local database used by the schema and author tools. A database ID is not needed for this local binding.
 
 All three empty tables are needed: `comments`, `comment_images`, and `script_edits`. Runtime state, downloaded attachments and archives belong in ignored directories, never in Git.
 
@@ -77,7 +77,7 @@ The watcher prints each comment's slide, click, text, image attachments and box 
 
 ## Pull coauthor script edits
 
-Coauthors click a note in Script and edit it. The browser first reads shared note versions, then saves your edits locally and submits them in order. If another coauthor saves the same note first, your text stays in this browser and a comparison card lets you use the shared version or explicitly save your version after review. The author reviews, applies, rebuilds and publishes:
+Coauthors open the script (`s` twice), click a note and edit it. The browser first reads shared note versions, then saves your edits locally and submits them in order. If another coauthor saves the same note first, your text stays in this browser and a comparison card lets you use the shared version or explicitly save your version after review. The author reviews, applies, rebuilds and publishes:
 
 ```sh
 node cloudflare/comments/script_watch.mjs --list

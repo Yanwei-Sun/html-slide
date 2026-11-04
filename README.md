@@ -11,17 +11,30 @@ tagged with the exact slide and click, so you, or an agent such as Claude Code o
 
 ## Comments your AI agent can act on
 
-**For coauthors: one link.** Send the site's link and passcode. On any slide they press **Comment**, type, draw a box around the
-part they mean (**Mark on slide**), and paste or drop up to four screenshots. Or they open **Script** and rewrite a note. Everyone
-with the link and passcode has the same access.
+**For coauthors: one link.** Send the site's link and passcode. On any slide they press `c` (or **Comment** in the menu), type,
+draw a box around the part they mean (**Mark on slide**), and paste or drop up to four screenshots. Or they press `s` twice to
+open the script and rewrite a note. Everyone with the link and passcode has the same access.
 
-![Drawing a box and writing a comment](docs/img/comment-box.png)
+![A comment on slide 5, click 2, with a box marked on the slide and a screenshot attached](docs/img/comment-box.png)
 
 **For your agent: precise, local feedback.** `cloudflare/comments/watch.mjs` brings new comments to your computer. Each comment
 comes with its slide ID, click number, text, the marked box (with `--render-box`, a slide PNG with that box drawn on it), and the
 attached images, saved under `work/cloudflare/`. A coding agent can read that, edit the slide's file in
 [deck/slides/](deck/slides/), check it with `npm run shots`, publish, and answer with
 `cloudflare/comments/resolve.mjs`. The reply appears under the original comment on the site.
+
+The comment in the picture reaches your computer like this:
+
+```text
+=== COMMENT (template) === #5.2 (M08) Example: customer service
+by (unnamed) | 2026-11-04T18:14:18.325Z | open
+Could we make the AI agent label a little larger?
+box: x=378 y=372 w=238 h=304 (1920x1080 slide coordinates)
+reference: open deck/index.html; slide 5 (M08), click 2
+cid: 0mw2frkyd-f205d40b
+image 0: image/webp 380x300 10.3 KB
+saved: work/cloudflare/local-5c02014bd8b5/attachments/0mw2frkyd-f205d40b_0.webp
+```
 
 ```mermaid
 flowchart LR
@@ -73,7 +86,7 @@ each finished comment to any agent command, for example `--command claude -p` or
 
 ## Open the talk
 
-Open [deck/index.html](deck/index.html) in your browser. The images, fonts, and math renderer are included, so you can present offline.
+Clone or download this repository, then open [deck/index.html](deck/index.html) in your browser. The images, fonts, and math renderer are included, so you can present offline.
 
 If you prefer a local web address, run this from the repository folder:
 
@@ -84,6 +97,8 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory deck
 Then open [http://127.0.0.1:8000](http://127.0.0.1:8000). This is a slide preview; the shared comment service is set up below.
 
 Presenting needs only a few keys: **`s`** slides, **`s` `s`** script, **`c`** comment, **`f`** full screen. The menu (**Slides**, **Full screen**, **Comment**) opens with **`m`** or the small dot in the bottom-right corner, which fades in when the pointer comes near.
+
+![The bottom of a slide with the menu open: Slides, Full screen, and Comment, and the dot in the bottom-right corner](docs/img/menu.png)
 
 | Action | Mouse or key |
 | --- | --- |
@@ -101,18 +116,18 @@ Presenting needs only a few keys: **`s`** slides, **`s` `s`** script, **`c`** co
 | Close overview, comments, menu, or blank screen; cancel a jump | Escape |
 
 **Why these controls.** In a talk, nothing should appear unless you ask for it.
-- The menu used to slide up whenever the pointer touched the bottom edge, which happens by accident while presenting. Now it opens only on purpose (`m` or the corner dot), and closes once you use it.
+- The menu does not slide up when the pointer touches the bottom edge, which happens by accident while presenting. It opens only on purpose (`m` or the corner dot) and closes once you use it.
 - The actions you need most are single keys you can press without looking at the screen.
 - The script has no button, so a stray click never shows your notes to the audience; `s` `s` opens it.
 - The pointer hides after two seconds without moving, so it never sits on a slide.
 
-The controls live in `deck/js/presenter.js` and `deck/css/presenter.css`; remove those two lines from `deck/index.html` to get the always-visible bottom bar back.
+The controls live in `deck/js/presenter.js` and `deck/css/presenter.css`. To go back to the engine's own bottom bar, which slides up when the pointer reaches the bottom edge and has a **Script** button, remove the two lines that load them from `deck/index.html`.
 
 The address records the current slide and build, such as `#5.2` for slide 5, click 2. Visible source links on slides open their sources.
 
-The Slides overview lets you jump straight to a thumbnail.
+The overview (`s`) shows every slide with its number and title; select one to jump there.
 
-![The slide overview](docs/img/overview.png)
+![The slide overview, with the current slide outlined in gold](docs/img/overview.png)
 
 ## What the features look like
 
@@ -122,22 +137,18 @@ A slide can reveal one idea at a time. These are three real states of the same s
 | --- | --- | --- |
 | ![Customer-service figure on entry](docs/img/build-01.png) | ![The first build adds the AI workflow](docs/img/build-02.png) | ![The second build adds the pricing comparison](docs/img/build-03.png) |
 
-The Script panel follows the current click, highlights its note, and shows the next slide's title. Click a note to edit it.
+The script panel (`s` `s`) follows the current click, highlights its note, and shows the next slide's title. Click a note to edit it.
 
-![The script beside its slide](docs/img/script.png)
+![The script beside its slide, with the note for the current click highlighted](docs/img/script.png)
 
-Full screen keeps the slide large while retaining access to the controls.
+On the Cloudflare preview or shared site, `c` opens feedback for the current slide and click (see
+[Comments your AI agent can act on](#comments-your-ai-agent-can-act-on)). A comment goes through three steps:
 
-![The deck in actual full-screen mode](docs/img/fullscreen.png)
+| 1. Write, mark, attach | 2. Sent | 3. Fixed and answered |
+| --- | --- | --- |
+| ![The comment panel with text, an attached screenshot, and a marked box](docs/img/comment-write.png) | ![The sent comment listed under its slide](docs/img/comment-sent.png) | ![The comment marked done, with the author's reply under it](docs/img/comment-reply.png) |
 
-On the Cloudflare preview or shared site, **Comment** opens feedback for the current slide (see
-[Comments your AI agent can act on](#comments-your-ai-agent-can-act-on)). Stay on that build when sending a marked box.
-
-![The Comment button on the shared deck](docs/img/comment-button.png)
-
-The author can fix the slide and post a resolution reply. That reply stays under the original comment. **Show all slides** lets you review feedback across the talk.
-
-![A sample comment with the author's reply](docs/img/comment-thread.png)
+Stay on that build when sending a marked box. The author fixes the slide, republishes, and replies with `resolve.mjs`; the reply stays under the original comment. Tick **show all slides** to see the feedback across the talk.
 
 The shared site asks for a passcode before displaying the deck or its feedback. Everyone with the passcode has the same viewing and editing access.
 
@@ -179,7 +190,7 @@ npm run script:export -- --force
 
 ### Edits made in the browser
 
-Click any note in the Script panel. Click outside or press Command/Ctrl + Enter to finish; Escape restores the previous edit. Edits are also saved as you type.
+Click any note in the script panel. Click outside or press Command (or Control) + Enter to finish; Escape restores the previous edit. Edits are also saved as you type.
 
 In an ordinary local or offline deck, these edits stay in that browser. **Export edits** downloads the changed notes, and **Copy** copies them. In a supporting browser, **Link edits file** keeps a file such as `SCRIPT_EDITS.md` updated.
 
@@ -187,7 +198,7 @@ Those browser exports are a review handoff with old and new text. To adopt one, 
 
 On the Cloudflare site, browser edits are also sent to the author after a short pause. A saved message confirms receipt. The author reviews and applies them locally, then republishes the deck so everyone receives the updated script. If another coauthor saved the same note, a comparison keeps both versions. Review them before choosing **Use shared version** or **Save my version**.
 
-![A coauthor editing a note on the shared site](docs/img/script-edit.png)
+![A coauthor editing a note in the script panel on the shared site](docs/img/script-edit.png)
 
 ## Bundle, print, and check
 
@@ -217,6 +228,8 @@ flowchart LR
 ```
 
 ## Review locally with an inbox
+
+![The local inbox workflow: write in INBOX.md, the watcher notifies your agent, the agent archives, fixes, checks, and logs, then resolve closes the item](docs/img/inbox-flow.svg)
 
 [inbox/INBOX.md](inbox/INBOX.md) is a place to write feedback while reviewing the deck. Add one top-level bullet below its separator. Include the slide ID or number, and put related details or screenshot links in indented lines. End the complete comment with `done!` when it is ready for the coding agent to read:
 
@@ -289,7 +302,7 @@ npm run cf:dev
 
 Open the address printed by Wrangler, normally [http://127.0.0.1:8788](http://127.0.0.1:8788), and enter your chosen passcode. Pages development runs locally; it takes no `--local` flag. D1 commands use `--local` to select the local database. Keep the same persistence directory when restarting.
 
-Try sending a comment with a box, editing a script note, and using the author commands below. A **Decks** button opens the one-deck list.
+Try sending a comment with a box, editing a script note, and using the author commands below. On this site the menu also has **Decks**, which opens the one-deck list.
 
 ![The template deck list](docs/img/deck-list.png)
 
@@ -340,7 +353,7 @@ Create a Cloudflare account, then run these commands from the repository folder.
 
    The script uses branch `main` by default. If your login has several accounts, set `CLOUDFLARE_ACCOUNT_ID` in your own environment to select the intended account. The project name comes from `CF_PROJECT_NAME`; the database comes from your config.
 
-Share the Pages link and your chosen passcode with coauthors. Ask them to open a slide, choose Comment, optionally mark a box or attach an image, and send. They can open Script to suggest wording changes; the saved message confirms the server received them.
+Share the Pages link and your chosen passcode with coauthors. Ask them to open a slide, press `c` (or **Comment** in the menu), optionally mark a box or attach an image, and send. To suggest wording changes, they press `s` twice to open the script; the saved message confirms the server received them.
 
 For a local build without uploading, run `npm run cf:stage`. It writes `cloudflare/site/`; the Pages Functions stay in the sibling `cloudflare/functions/` folder. The publish script's default action is staging. Uploading requires its explicit `deploy` argument.
 
@@ -395,6 +408,6 @@ For local experiments, leave off `--remote` and the user config. If you change t
 | `tools/` | Apply/watch notes, bundle HTML, and capture builds |
 | `inbox/` | Local feedback template, notification watchers, archive, and work log |
 | `cloudflare/` | The optional shared site, database schema, and author tools |
-| `docs/img/` | Real browser screenshots used in this guide |
+| `docs/img/` | Real browser screenshots and the inbox diagram used in this guide |
 
 The original template code is free to use, modify, and share. The example talk's content, photos, logos, and company screenshots belong to their respective owners and are included as examples. Third-party code and fonts retain their own licenses; see [LICENSE](LICENSE) and the included [MathJax license](deck/vendor/mathjax/LICENSE).

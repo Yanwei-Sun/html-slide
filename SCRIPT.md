@@ -6,7 +6,7 @@ Use `npm run script:watch` to apply saved changes while you edit. Reload the dec
 
 <!-- Base hashes prevent an old script from overwriting newer slide notes. -->
 
-## 1 · M01 (M01)
+## 1 · Title (M01)
 
 ### M01.0 · on entry
 <!-- slide-note {"sid":"M01","k":0,"base":"5a6d4ce538a000c8170c3b80d6b8bfa5f40bff08f8ffe1c4b7ff9b52b5d94209"} -->

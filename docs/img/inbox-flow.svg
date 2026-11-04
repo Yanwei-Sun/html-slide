@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="246" viewBox="0 0 1040 246" role="img" aria-labelledby="t d">
+  <title id="t">The local inbox workflow</title>
+  <desc id="d">You add a comment to INBOX.md that ends with done! Then inbox_watch.py hands it to your agent command. The agent archives it in COMMENTS.md, fixes and checks the slide, and logs the work in LOG.md. The resolve command checks the archive, then the bullet is removed.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#A3A3A3"/>
+    </marker>
+    <style>
+      .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 14px; }
+      .who { font-size: 12px; letter-spacing: 1.2px; fill: #666666; }
+      .step { font-size: 19px; font-weight: 600; fill: #232323; }
+      .num { fill: #C6952C; }
+      .line { font-size: 15px; fill: #232323; }
+      .note { font-size: 14px; fill: #666666; }
+      .box { fill: #F6F6F4; stroke: #D9D9D9; stroke-width: 1.2; }
+      .flow { stroke: #A3A3A3; stroke-width: 1.6; fill: none; }
+    </style>
+  </defs>
+  <rect x="0.5" y="0.5" width="1039" height="245" rx="10" fill="#FFFFFF" stroke="#D9D9D9"/>
+
+  <g class="sans">
+    <text class="who" x="30" y="38">YOU</text>
+    <rect class="box" x="30" y="50" width="220" height="138" rx="8"/>
+    <text class="step" x="48" y="86"><tspan class="num">1</tspan>  Write</text>
+    <text class="line" x="48" y="118">Add a comment to</text>
+    <text class="line" x="48" y="142"><tspan class="mono">INBOX.md</tspan> and end it</text>
+    <text class="line" x="48" y="166">with <tspan class="mono">done!</tspan></text>
+
+    <path class="flow" d="M253 119 H277" marker-end="url(#arrow)"/>
+
+    <text class="who" x="280" y="38">WATCHER</text>
+    <rect class="box" x="280" y="50" width="220" height="138" rx="8"/>
+    <text class="step" x="298" y="86"><tspan class="num">2</tspan>  Notify</text>
+    <text class="line" x="298" y="118"><tspan class="mono">inbox_watch.py</tspan> hands</text>
+    <text class="line" x="298" y="142">the comment to your</text>
+    <text class="line" x="298" y="166">agent command</text>
+
+    <path class="flow" d="M503 119 H527" marker-end="url(#arrow)"/>
+
+    <text class="who" x="530" y="38">CODING AGENT</text>
+    <rect class="box" x="530" y="50" width="260" height="138" rx="8"/>
+    <text class="step" x="548" y="86"><tspan class="num">3</tspan>  Fix and check</text>
+    <text class="line" x="548" y="118">Archive it in <tspan class="mono">COMMENTS.md</tspan>,</text>
+    <text class="line" x="548" y="142">fix the slide and check it,</text>
+    <text class="line" x="548" y="166">log the work in <tspan class="mono">LOG.md</tspan></text>
+
+    <path class="flow" d="M793 119 H817" marker-end="url(#arrow)"/>
+
+    <text class="who" x="820" y="38">CODING AGENT</text>
+    <rect class="box" x="820" y="50" width="190" height="138" rx="8"/>
+    <text class="step" x="838" y="86"><tspan class="num">4</tspan>  Close</text>
+    <text class="line" x="838" y="118"><tspan class="mono">resolve</tspan> checks</text>
+    <text class="line" x="838" y="142">the archive, then</text>
+    <text class="line" x="838" y="166">remove the bullet</text>
+
+    <text class="note" x="520" y="222" text-anchor="middle">The watcher only notifies. It never edits slides, the archive, or the log.</text>
+  </g>
+</svg>

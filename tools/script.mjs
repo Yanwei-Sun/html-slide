@@ -72,8 +72,8 @@ function specsOf(source, file) {
     if (object?.type !== 'ObjectExpression') throw new Error(`${file}: slide registration must use an object literal.`);
     const sid = literal(property(object, 'id'), `${file}: slide id`);
     if (typeof sid !== 'string' || !/^[A-Za-z0-9_-]+$/.test(sid)) throw new Error(`${file}: invalid slide id.`);
-    const titleNode = property(object, 'name') || property(object, 'title');
-    let title = sid;
+    const titleNode = property(object, 'name') || property(object, 'title'), kindNode = property(object, 'kind');
+    let title = kindNode?.type === 'Literal' && kindNode.value === 'title' ? 'Title' : sid;   // as in the deck's overview
     if (titleNode?.type === 'Literal' || (titleNode?.type === 'TemplateLiteral' && !titleNode.expressions.length)) title = String(literal(titleNode, 'Title'));
     const notesNode = property(object, 'notes');
     const nodes = !notesNode ? [] : notesNode.type === 'ArrayExpression' ? notesNode.elements : [notesNode];
